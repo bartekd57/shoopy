@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Szooopi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container py-2">
+    <div class="jumbotron text-black jumbotron-image shadow"
+         style="background-image : url('https://i.postimg.cc/8PdzL9Rg/zakupy-z-dostawa-do-domu.jpg');">
+        <div class="container text-center">
+            <h1 class="mb-3 display-1">
+                Szooopi
+            </h1>
+            <p class="mb-3 display-4">
+                Uporządkuj swoje zakupy!
+            </p>
+            <p></p>
+            <p></p>
+            <a href="#" th:href="@{|/nowaLista|}" class="btn btn-secondary">Dodaj nową listę</a>
+        </div>
+    </div>
+</div>
+<div class="container text-center">
+    <p>Naciśnij, aby posportować</p>
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center mb-2">
+                <a href="#" th:href="@{/}"
+                   class="btn btn-primary mx-1">Wszystkie</a>
+                <a href="#" th:href="@{/listy(status=${T(pl.shoplist.model.Status).NEW.name()})}"
+                   class="btn btn-warning mx-1" th:text="${T(pl.shoplist.model.Status).NEW.name()}">Nowe</a>
+                <a href="#" th:href="@{/listy(status=${T(pl.shoplist.model.Status).FINISHED.name()})}"
+                   class="btn btn-success mx-1" th:text="${T(pl.shoplist.model.Status).FINISHED.name()}">Zakończone</a>
+            </div>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%">#</th>
+                <th style="width: 40%">Nazwa</th>
+                <th style="width: 10%">Status</th>
+                <th style="width: 15%">Dodawanie</th>
+                <th style="width: 15%">Usuwanie listy</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="shopList,idx :${shopLists}">
+                <th scope="row" th:text="${idx.index+1}"></th>
+                <td>
+                    <a href="#" th:href="@{|/lista/${shopList.id}|}">
+                        <h5 th:text="${shopList.name}">Podstawowa lista</h5>
+                    </a>
+                </td>
+                <td><a class="btn btn-danger d-block" href="#" th:href="@{/status(listId=${shopList.id})}"
+                       th:text="${shopList.status}">Status</a></td>
+                <td><a href="#" th:href="@{|/dodaj/${shopList.id}|}" class="btn btn-warning d-block">Dodaj produkt</a>
+                </td>
+                <td><a href="#" th:href="@{|/usun/${shopList.id}|}" class="btn btn-success d-block">Usuń listę</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

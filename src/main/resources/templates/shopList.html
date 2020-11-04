@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Szooopi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link href="../static/css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <h1 class="text-center" th:text="${list.name}">Nazwa listy</h1>
+        <h3 class="text-center" th:text=" ${list.desc}">Opis listy</h3>
+        <p></p>
+        <div class="container text-center">
+            <a href="#" th:href="@{/}">Powrót do strony głównej</a></div>
+        <p></p>
+        <h3 class="text-center" th:text="|Status listy: ${list.status}|">Status listy</h3>
+        <p></p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 30%">Nazwa</th>
+                <th style="width: 35%">Opis</th>
+                <th style="width: 10%">Cena(zł)</th>
+                <th style="width: 10%">Edycja</th>
+                <th style="width: 10%">Usuwanie</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="listItem, idx : ${listItems}">
+                <th scope="row" th:text="${idx.index+1}"></th>
+                <td th:text="${listItem.name}"></td>
+                <td th:text="${listItem.shortDescription}"></td>
+                <td th:text="${listItem.price}"></td>
+                <td><a href="#" th:href="@{|/edytuj/lista${list.id}/produkt${listItem.id}|}"
+                       class="btn btn-secondary d-block">Edytuj</a></td>
+                <td><a href="#" th:href="@{|/usunProdukt/${listItem.id}|}" class="btn btn-info d-block">Usuń</a></td>
+            </tr>
+            </tbody>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Suma:</th>
+                <th th:text="|${sum} zł|">suma</th>
+            </tr>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center mb-2">
+                <a href="#" th:href="@{|/dodaj/${list.id}|}"
+                   class="btn btn-primary mx-1">Dodaj produkt</a>
+                <a href="#" th:href="@{/status(listId=${list.id})}"
+                   class="btn btn-warning mx-1">Zmień status listy</a>
+                <a href="#" th:href="@{|/usun/${list.id}|}"
+                   class="btn btn-success mx-1">Usuń listę</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

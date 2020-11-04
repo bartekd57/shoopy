@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Szooopi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<meta charset="UTF-8">
+<title>Title</title>
+</head>
+<body>
+<div class="container text-center">
+    <h1 class="display-5" th:text="${message.title}">Dodano nową liste</h1>
+    <p th:text="${message.content}">nowa lista o nazwie...</p>
+
+    <a href="#" th:href="@{/}">Powrót do strony głównej</a>
+    <p></p>
+    <a href="#" th:href="@{|/lista/${list.id}|}">Powrót do listy zakupów</a>
+</div>
+<p></p>
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Produkt</th>
+                    <th scope="col">Opis</th>
+                    <th scope="col">Cena</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="listItem, idx : ${listItems}">
+                    <th scope="row" th:text="${idx.index+1}"></th>
+                    <td th:text="${listItem.name}"></td>
+                    <td th:text="${listItem.shortDescription}"></td>
+                    <td th:text="${listItem.price}"></td>
+                </tr>
+                </tbody>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Suma</th>
+                    <th th:text="|${sum} zł|">suma</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

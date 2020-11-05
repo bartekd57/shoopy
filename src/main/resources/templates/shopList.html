@@ -37,7 +37,7 @@
                 <td th:text="${listItem.price}"></td>
                 <td><a href="#" th:href="@{|/edytuj/lista${list.id}/produkt${listItem.id}|}"
                        class="btn btn-secondary d-block">Edytuj</a></td>
-                <td><a href="#" th:href="@{|/usunProdukt/${listItem.id}|}" class="btn btn-info d-block">Usuń</a></td>
+                <td><a href="#" th:href="@{|/usunProdukt/${listItem.id}/${list.id}|}" class="btn btn-info d-block">Usuń</a></td>
             </tr>
             </tbody>
             <tr>

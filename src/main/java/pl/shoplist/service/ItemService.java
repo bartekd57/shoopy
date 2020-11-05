@@ -8,6 +8,7 @@ import pl.shoplist.model.ShoppingList;
 import pl.shoplist.repository.ItemRepository;
 import pl.shoplist.repository.ShoppingListRepository;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,12 @@ public class ItemService {
                 });
     }
 
-
+    public void deleteItemFromList(Long id, List list){
+        for (Iterator<Item> it = list.iterator(); it.hasNext();) {
+            Item next = it.next();
+            if((next.getId()).equals(id))
+                list.remove(next);
+        }
+    }
 
 }

@@ -14,7 +14,7 @@ public class ShoppingList {
     private Long id;
     private String name;
     private String desc;
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "list_item",
     joinColumns = @JoinColumn(name="list_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))

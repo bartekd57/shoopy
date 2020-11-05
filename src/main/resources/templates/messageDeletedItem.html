@@ -8,9 +8,12 @@
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet">
 </head>
 <body>
+<div class="container text-center">
 <h1 th:text="${message.title}">Tytuł wiadomości</h1>
 <p th:text="${message.content}">Treść wiadomości</p>
-<a href="#" th:href="@{/lista/${list.id}}" class="button">Powrót do listy</a>
+<a href="#" th:href="@{|/lista/${list.id}|}" class="button">Powrót do listy</a>
+<p></p>
 <a href="#" th:href="@{/}" class="button">Powrót do strony głównej</a>
+</div>
 </body>
 </html>

@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.shoplist.common.Message;
 import pl.shoplist.model.Item;
+import pl.shoplist.model.ShoppingList;
 import pl.shoplist.repository.ItemRepository;
 import pl.shoplist.repository.ShoppingListRepository;
 import pl.shoplist.service.ItemService;
 import pl.shoplist.service.ShoppingListService;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -91,21 +93,19 @@ public class ItemController {
         return "message";
     }
 
-    @GetMapping("/usunProdukt/{id}")
-    public String deleteProductFromList( @PathVariable Long id, Model model){
-        itemRepository.findById(id)
-                .ifPresent(item -> {
-                    item.setCategory(null);
-                    itemRepository.delete(item);
-                });
+    @GetMapping("/usunProdukt/{id}/{listId}")
+    public String deleteProductFromList( @PathVariable Long id,@PathVariable Long listId, Model model){
 
+        List<Item> items = itemService.getListItems(listId);
+        itemService.deleteItemFromList(id, items);
 
+        shoppingListRepository.findById(listId)
+                .ifPresent(list ->{
+                    list.setListItems(items);
+                    shoppingListRepository.save(list);
+                    model.addAttribute("list", list);
+                        });
 
-
-        // shoppingListRepository.findById(listId)
-          //      .ifPresent(list ->{
-             //       model.addAttribute("list", list);
-             //   });
         model.addAttribute("message", new Message("Usunięto produkt", "Usnięto produkt z listy"));
         return "messageDeletedItem";
     }

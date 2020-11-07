@@ -16,17 +16,16 @@ import java.util.List;
 @Controller
 public class HomeController {
 
-    private ShoppingListRepository shoppingListRepository;
+    private ShoppingListService shoppingListService;
 
     @Autowired
-    public HomeController(ShoppingListRepository shoppingListRepository) {
-        this.shoppingListRepository = shoppingListRepository;
+    public HomeController(ShoppingListService shoppingListService) {
+        this.shoppingListService = shoppingListService;
     }
-
 
     @GetMapping("/")
     public String home( Model model) {
-        List<ShoppingList> shoppingLists =  shoppingListRepository.findAll();
+        List<ShoppingList> shoppingLists =  shoppingListService.getAllLists();
 
         model.addAttribute("shopLists", shoppingLists);
         return "index";

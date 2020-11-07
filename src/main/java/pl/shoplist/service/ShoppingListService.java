@@ -27,6 +27,22 @@ public class ShoppingListService {
 
     }
 
+    public void deleteList(ShoppingList shoppingList){
+        shoppingListRepository.delete(shoppingList);
+    }
+    public void saveList(ShoppingList shoppingList){
+        shoppingListRepository.save(shoppingList);
+    }
+
+    public List<ShoppingList> getAllLists(){
+        return shoppingListRepository.findAll();
+    }
+
+    public List<ShoppingList> findListByStatus(Status status){
+        return shoppingListRepository.findAllByStatus(status);
+    }
+
+
    public ShoppingList createSetSaveList(String name, String desc){
        ShoppingList shoppingList = new ShoppingList();
        shoppingList.setName(name);

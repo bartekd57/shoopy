@@ -10,6 +10,7 @@ import pl.shoplist.repository.ShoppingListRepository;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +25,11 @@ public class ItemService {
         this.shoppingListRepository = shoppingListRepository;
     }
 
+    public Optional<Item> findItemById(Long id) {
+        return itemRepository.findById(id);
+    }
 
-    public Item createSetSaveItem(String name, String desc, Double price){
+    public Item createSetSaveItem(String name, String desc, Double price) {
         Item item = new Item();
         item.setName(name);
         item.setShortDescription(desc);
@@ -35,7 +39,7 @@ public class ItemService {
 
     }
 
-    public List<Item> getListItems(Long id){
+    public List<Item> getListItems(Long id) {
         return shoppingListRepository.findById(id)
                 .map(ShoppingList::getListItems)
                 .orElseThrow(ItemsNotFoundException::new)
@@ -44,7 +48,7 @@ public class ItemService {
 
     }
 
-    public Double getSumPrices(Long id){
+    public Double getSumPrices(Long id) {
         return shoppingListRepository.findById(id)
                 .map(ShoppingList::getListItems)
                 .orElseThrow(ItemsNotFoundException::new)
@@ -53,7 +57,7 @@ public class ItemService {
                 .sum();
     }
 
-    public void editItem(Long itemId, String itemName, String itemDesc, Double itemPrice){
+    public void editItem(Long itemId, String itemName, String itemDesc, Double itemPrice) {
         itemRepository.findById(itemId)
                 .ifPresent(item -> {
                     item.setName(itemName);
@@ -63,12 +67,13 @@ public class ItemService {
                 });
     }
 
-    public void deleteItemFromList(Long id, List list){
-        for (Iterator<Item> it = list.iterator(); it.hasNext();) {
+    public void deleteItemFromList(Long id, List list) {
+        for (Iterator<Item> it = list.iterator(); it.hasNext(); ) {
             Item next = it.next();
-            if((next.getId()).equals(id))
+            if ((next.getId()).equals(id))
                 list.remove(next);
         }
     }
+
 
 }

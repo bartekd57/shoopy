@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.shoplist.common.Message;
 import pl.shoplist.model.Item;
-import pl.shoplist.model.ShoppingList;
 import pl.shoplist.repository.ItemRepository;
 import pl.shoplist.repository.ShoppingListRepository;
 import pl.shoplist.service.ItemService;
 import pl.shoplist.service.ShoppingListService;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -23,15 +21,11 @@ public class ItemController {
 
 
     private ShoppingListService shoppingListService;
-    private ShoppingListRepository shoppingListRepository;
-    private ItemRepository itemRepository;
     private ItemService itemService;
 
     @Autowired
     public ItemController(ShoppingListService shoppingListService, ShoppingListRepository shoppingListRepository, ItemRepository itemRepository, ItemService itemService) {
         this.shoppingListService = shoppingListService;
-        this.shoppingListRepository = shoppingListRepository;
-        this.itemRepository = itemRepository;
         this.itemService = itemService;
     }
 
@@ -44,12 +38,12 @@ public class ItemController {
         Item item = itemService.createSetSaveItem(itemName, itemDesc, itemPrice);
         items.add(item);
 
-        shoppingListRepository.findById(listId)
+        shoppingListService.findListById(listId)
                 .ifPresent(list -> {
                     list.setListItems(items);
-                model.addAttribute("list", list);});
-        shoppingListRepository.findById(listId)
-                .ifPresent(list -> {shoppingListRepository.save(list);});
+                    model.addAttribute("list", list);
+                    shoppingListService.saveList(list);
+                });
 
         Double sum = itemService.getSumPrices(listId);
 
@@ -58,32 +52,31 @@ public class ItemController {
         model.addAttribute("sum", sum);
 
         return "message";
-
     }
 
     @GetMapping("/edytuj/lista{listId}/produkt{itemId}")
-    public String getToItemEdit(@PathVariable Long listId, @PathVariable Long itemId, Model model){
-        itemRepository.findById(itemId)
+    public String getToItemEdit(@PathVariable Long listId, @PathVariable Long itemId, Model model) {
+        itemService.findItemById(itemId)
                 .ifPresent(item -> {
                     model.addAttribute("item", item);
                 });
-        shoppingListRepository.findById(listId)
-                .ifPresent(list ->{
-                    model.addAttribute("list",list);
+        shoppingListService.findListById(listId)
+                .ifPresent(list -> {
+                    model.addAttribute("list", list);
                 });
         return "itemEdit";
     }
 
 
     @PostMapping("/edytuj/lista{listId}/produkt{itemId}")
-    public String editItem(@PathVariable Long listId,@PathVariable Long itemId,
-                                @RequestParam String itemName, @RequestParam String itemDesc,
-                           @RequestParam Double itemPrice, Model model){
+    public String editItem(@PathVariable Long listId, @PathVariable Long itemId,
+                           @RequestParam String itemName, @RequestParam String itemDesc,
+                           @RequestParam Double itemPrice, Model model) {
 
         itemService.editItem(itemId, itemName, itemDesc, itemPrice);
         List<Item> items = itemService.getListItems(listId);
         Double sum = itemService.getSumPrices(listId);
-        shoppingListRepository.findById(listId)
+        shoppingListService.findListById(listId)
                 .ifPresent(list ->
                         model.addAttribute("list", list));
 
@@ -94,22 +87,21 @@ public class ItemController {
     }
 
     @GetMapping("/usunProdukt/{id}/{listId}")
-    public String deleteProductFromList( @PathVariable Long id,@PathVariable Long listId, Model model){
+    public String deleteProductFromList(@PathVariable Long id, @PathVariable Long listId, Model model) {
 
         List<Item> items = itemService.getListItems(listId);
         itemService.deleteItemFromList(id, items);
 
-        shoppingListRepository.findById(listId)
-                .ifPresent(list ->{
+        shoppingListService.findListById(listId)
+                .ifPresent(list -> {
                     list.setListItems(items);
-                    shoppingListRepository.save(list);
+                    shoppingListService.saveList(list);
                     model.addAttribute("list", list);
-                        });
+                });
 
         model.addAttribute("message", new Message("Usunięto produkt", "Usnięto produkt z listy"));
         return "messageDeletedItem";
     }
-
 
 
 }

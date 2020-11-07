@@ -21,22 +21,18 @@ import java.util.Optional;
 public class ShoppingListController {
 
     private ShoppingListService shoppingListService;
-    private ShoppingListRepository shoppingListRepository;
-    private ItemRepository itemRepository;
     private ItemService itemService;
 
     @Autowired
-    public ShoppingListController(ShoppingListService shoppingListService, ShoppingListRepository shoppingListRepository,  ItemRepository itemRepository, ItemService itemService) {
+    public ShoppingListController(ShoppingListService shoppingListService,   ItemRepository itemRepository, ItemService itemService) {
         this.shoppingListService = shoppingListService;
-        this.shoppingListRepository = shoppingListRepository;
-        this.itemRepository = itemRepository;
         this.itemService = itemService;
     }
 
 
     @GetMapping("/lista/{id}")
     public String getItem(@PathVariable Long id, Model model) {
-        Optional<ShoppingList> listById = shoppingListRepository.findById(id);
+        Optional<ShoppingList> listById = shoppingListService.findListById(id);
         List<Item> listItems = itemService.getListItems(id);
         listById.ifPresent(list -> model.addAttribute("list", list));
 
@@ -55,7 +51,7 @@ public class ShoppingListController {
 
     @GetMapping("/dodaj/{id}")
     public String addItemsToList(@PathVariable Long id, Model model) {
-        Optional<ShoppingList> listById = shoppingListRepository.findById(id);
+        Optional<ShoppingList> listById = shoppingListService.findListById(id);
         listById.ifPresent(list -> model.addAttribute("listFromId", list));
 
         return "addItems";
@@ -63,9 +59,9 @@ public class ShoppingListController {
 
     @GetMapping("usun/{id}")
     public String removeList(@PathVariable Long id, Model model) {
-        shoppingListRepository.findById(id)
+        shoppingListService.findListById(id)
                 .ifPresent(list -> {
-                    shoppingListRepository.delete(list);
+                    shoppingListService.deleteList(list);
                 });
 
         model.addAttribute("message", new Message("Usunięto listę", "Lista została usunięta z bazy"));
@@ -82,10 +78,10 @@ public class ShoppingListController {
 
     @GetMapping("/status")
     public String changeStatus(@RequestParam Long listId, Model model) {
-        shoppingListRepository.findById(listId)
+        shoppingListService.findListById(listId)
                 .ifPresent(list -> {
                     shoppingListService.changeListStatus(list);
-                    shoppingListRepository.save(list);
+                    shoppingListService.saveList(list);
                 });
 
         model.addAttribute("message", new Message("Zmieniono status listy", "Status listy pomyślnie zmieniony"));
@@ -97,9 +93,9 @@ public class ShoppingListController {
     public String home(@RequestParam(required = false) Status status, Model model) {
         List<ShoppingList> shoppingLists;
         if (status == null)
-            shoppingLists = shoppingListRepository.findAll();
+            shoppingLists = shoppingListService.getAllLists();
         else
-            shoppingLists = shoppingListRepository.findAllByStatus(status);
+            shoppingLists = shoppingListService.findListByStatus(status);
 
         model.addAttribute("shopLists", shoppingLists);
         return "index";

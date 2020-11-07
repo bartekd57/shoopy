@@ -22,11 +22,13 @@ public class ShoppingListController {
 
     private ShoppingListService shoppingListService;
     private ItemService itemService;
+    private ShoppingListRepository shoppingListRepository;
 
     @Autowired
-    public ShoppingListController(ShoppingListService shoppingListService,   ItemRepository itemRepository, ItemService itemService) {
+    public ShoppingListController(ShoppingListService shoppingListService, ItemService itemService, ShoppingListRepository shoppingListRepository) {
         this.shoppingListService = shoppingListService;
         this.itemService = itemService;
+        this.shoppingListRepository = shoppingListRepository;
     }
 
 

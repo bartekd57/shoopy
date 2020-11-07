@@ -67,12 +67,17 @@ public class ItemService {
                 });
     }
 
-    public void deleteItemFromList(Long id, List list) {
+    public void deleteItemFromList(Long id, List<Item> list) {
         for (Iterator<Item> it = list.iterator(); it.hasNext(); ) {
             Item next = it.next();
-            if ((next.getId()).equals(id))
+            if ((next.getId()).equals(id)){
                 list.remove(next);
+                break;
+            }
+
+
         }
+
     }
 
 

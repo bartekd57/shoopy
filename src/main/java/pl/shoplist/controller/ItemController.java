@@ -22,12 +22,19 @@ public class ItemController {
 
     private ShoppingListService shoppingListService;
     private ItemService itemService;
+    private ShoppingListRepository shoppingListRepository;
+    private ItemRepository itemRepository;
 
     @Autowired
-    public ItemController(ShoppingListService shoppingListService, ShoppingListRepository shoppingListRepository, ItemRepository itemRepository, ItemService itemService) {
+    public ItemController(ShoppingListService shoppingListService, ItemService itemService, ShoppingListRepository shoppingListRepository, ItemRepository itemRepository) {
         this.shoppingListService = shoppingListService;
         this.itemService = itemService;
+        this.shoppingListRepository = shoppingListRepository;
+        this.itemRepository = itemRepository;
     }
+
+
+
 
 
     @PostMapping("/dodaj")

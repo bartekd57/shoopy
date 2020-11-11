@@ -1,7 +1,9 @@
 package pl.shoplist.service;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pl.shoplist.model.Item;
 import pl.shoplist.model.ShoppingList;
 import pl.shoplist.model.Status;
@@ -44,6 +46,7 @@ public class ShoppingListService {
 
 
    public ShoppingList createSetSaveList(String name, String desc){
+
        ShoppingList shoppingList = new ShoppingList();
        shoppingList.setName(name);
        shoppingList.setDesc(desc);

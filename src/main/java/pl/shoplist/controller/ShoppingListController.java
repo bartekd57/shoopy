@@ -1,10 +1,12 @@
 package pl.shoplist.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.server.ResponseStatusException;
 import pl.shoplist.common.Message;
 import pl.shoplist.model.Item;
 import pl.shoplist.model.ShoppingList;
@@ -73,8 +75,12 @@ public class ShoppingListController {
 
     @PostMapping("/nowaLista")
     public String getNewList(@RequestParam String listName, @RequestParam String listDesc, Model model) {
-        ShoppingList shoppingList = shoppingListService.createSetSaveList(listName, listDesc);
-        model.addAttribute("message", new Message("Dodano nową listę", "Dodano nową listę o nazwie " + shoppingList.getName()));
+        if (listName.isEmpty()) {
+            model.addAttribute("message", new Message("Nie podano nazwy", "Lista musi mieć nadaną nazwę"));
+        } else {
+            ShoppingList shoppingList = shoppingListService.createSetSaveList(listName, listDesc);
+            model.addAttribute("message", new Message("Dodano nową listę", "Dodano nową listę o nazwie " + shoppingList.getName()));
+        }
         return "messageDeleted";
     }
 

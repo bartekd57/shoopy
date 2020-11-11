@@ -58,8 +58,9 @@ public class ShoppingListService {
 
    public void changeListStatus(ShoppingList list){
         list.setStatus(Status.FINISHED);
-
    }
+
+
 
 
 }

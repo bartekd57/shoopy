@@ -36,7 +36,9 @@ public class ItemService {
         item.setPrice(price);
         itemRepository.save(item);
         return item;
-
+    }
+    public boolean checkItem(String name, Double price){
+        return (name.isEmpty() || price <= 0);
     }
 
     public List<Item> getListItems(Long id) {
@@ -74,8 +76,6 @@ public class ItemService {
                 list.remove(next);
                 break;
             }
-
-
         }
 
     }

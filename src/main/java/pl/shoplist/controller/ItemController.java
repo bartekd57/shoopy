@@ -40,6 +40,10 @@ public class ItemController {
     @PostMapping("/dodaj")
     public String addItemsToList(@RequestParam Long listId, @RequestParam String itemName,
                                  @RequestParam String itemDesc, @RequestParam Double itemPrice, Model model) {
+        if(itemService.checkItem(itemName, itemPrice)){
+            model.addAttribute("message", new Message( "Podano niepoprawne dane o produkcie","Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
+            return "messageDeleted";
+        }
 
         List<Item> items = itemService.getListItems(listId);
         Item item = itemService.createSetSaveItem(itemName, itemDesc, itemPrice);
@@ -79,7 +83,10 @@ public class ItemController {
     public String editItem(@PathVariable Long listId, @PathVariable Long itemId,
                            @RequestParam String itemName, @RequestParam String itemDesc,
                            @RequestParam Double itemPrice, Model model) {
-
+        if(itemService.checkItem(itemName, itemPrice)){
+            model.addAttribute("message", new Message( "Podano niepoprawne dane o produkcie","Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
+            return "messageDeleted";
+        }
         itemService.editItem(itemId, itemName, itemDesc, itemPrice);
         List<Item> items = itemService.getListItems(listId);
         Double sum = itemService.getSumPrices(listId);

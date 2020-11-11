@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ItemService {
@@ -37,7 +38,8 @@ public class ItemService {
         itemRepository.save(item);
         return item;
     }
-    public boolean checkItem(String name, Double price){
+
+    public boolean checkItem(String name, Double price) {
         return (name.isEmpty() || price <= 0);
     }
 
@@ -70,14 +72,10 @@ public class ItemService {
     }
 
     public void deleteItemFromList(Long id, List<Item> list) {
-        for (Iterator<Item> it = list.iterator(); it.hasNext(); ) {
-            Item next = it.next();
-            if ((next.getId()).equals(id)){
-                list.remove(next);
-                break;
-            }
-        }
-
+        list.stream()
+                .filter(u -> u.getId().equals(id))
+                .findAny()
+                .ifPresent(item -> list.remove(item));
     }
 
 

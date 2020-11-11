@@ -8,6 +8,7 @@ import pl.shoplist.model.Item;
 import pl.shoplist.model.ShoppingList;
 import pl.shoplist.model.Status;
 import pl.shoplist.repository.ShoppingListRepository;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,44 +24,46 @@ public class ShoppingListService {
     }
 
     public Optional<ShoppingList> findListById(Long id) {
-        return  shoppingListRepository.findById(id);
+        return shoppingListRepository.findById(id);
 
     }
 
-    public void deleteList(ShoppingList shoppingList){
+    public void deleteList(ShoppingList shoppingList) {
         List<Item> items = shoppingList.getListItems();
         items.clear();
         shoppingListRepository.delete(shoppingList);
     }
-    public void saveList(ShoppingList shoppingList){
+
+    public void saveList(ShoppingList shoppingList) {
         shoppingListRepository.save(shoppingList);
     }
 
-    public List<ShoppingList> getAllLists(){
+    public List<ShoppingList> getAllLists() {
         return shoppingListRepository.findAll();
     }
 
-    public List<ShoppingList> findListByStatus(Status status){
+    public List<ShoppingList> findListByStatus(Status status) {
         return shoppingListRepository.findAllByStatus(status);
     }
 
 
-   public ShoppingList createSetSaveList(String name, String desc){
+    public ShoppingList createSetSaveList(String name, String desc) {
 
-       ShoppingList shoppingList = new ShoppingList();
-       shoppingList.setName(name);
-       shoppingList.setDesc(desc);
-       shoppingList.setStatus(Status.NEW);
-       shoppingListRepository.save(shoppingList);
+        ShoppingList shoppingList = new ShoppingList();
+        shoppingList.setName(name);
+        shoppingList.setDesc(desc);
+        shoppingList.setStatus(Status.NEW);
+        shoppingListRepository.save(shoppingList);
 
-       return  shoppingList;
-   }
+        return shoppingList;
+    }
 
-   public void changeListStatus(ShoppingList list){
-        list.setStatus(Status.FINISHED);
-   }
-
-
+    public void changeListStatus(ShoppingList list) {
+        if (list.getStatus().equals(Status.NEW)) {
+            list.setStatus(Status.FINISHED);
+        } else
+            list.setStatus(Status.NEW);
+    }
 
 
 }

@@ -63,13 +63,11 @@ public class ShoppingListService {
 
 
     public ShoppingList createSetSaveList(String name, String desc) {
-
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.setName(name);
         shoppingList.setDesc(desc);
         shoppingList.setStatus(Status.NEW);
         shoppingListRepository.save(shoppingList);
-
         return shoppingList;
     }
 

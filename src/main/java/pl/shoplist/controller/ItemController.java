@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.shoplist.common.Message;
 import pl.shoplist.model.Item;
+import pl.shoplist.model.ShoppingList;
 import pl.shoplist.repository.ItemRepository;
 import pl.shoplist.repository.ShoppingListRepository;
 import pl.shoplist.service.ItemService;
@@ -45,21 +46,13 @@ public class ItemController {
             return "messageInfo";
         }
 
-        List<Item> items = itemService.getListItems(listId);
-        Item item = itemService.createSetSaveItem(itemName, itemDesc, itemPrice);
-        items.add(item);
-
-        shoppingListService.findListById(listId)
-                .ifPresent(list -> {
-                    list.setListItems(items);
-                    model.addAttribute("list", list);
-                    shoppingListService.saveList(list);
-                });
-
+        List<Item> items = itemService.saveItemOnShoppingList(itemName, itemDesc, itemPrice, listId);
+        ShoppingList list = shoppingListService.findListByIdIfPresent(listId);
         Double sum = itemService.getSumPrices(listId);
 
         model.addAttribute("message", new Message("Dodano produkt", "Dodano nowy produkt do listy zakupów"));
         model.addAttribute("listItems", items);
+        model.addAttribute("list", list);
         model.addAttribute("sum", sum);
 
         return "message";
@@ -67,14 +60,14 @@ public class ItemController {
 
     @GetMapping("/edytuj/lista{listId}/produkt{itemId}")
     public String getToItemEdit(@PathVariable Long listId, @PathVariable Long itemId, Model model) {
-        itemService.findItemById(itemId)
-                .ifPresent(item -> {
-                    model.addAttribute("item", item);
-                });
-        shoppingListService.findListById(listId)
-                .ifPresent(list -> {
-                    model.addAttribute("list", list);
-                });
+
+        Item item = itemService.findItemByIdIfPresent(itemId);
+        ShoppingList list = shoppingListService.findListByIdIfPresent(listId);
+
+        model.addAttribute("item", item);
+        model.addAttribute("list", list);
+
+
         return "itemEdit";
     }
 

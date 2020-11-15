@@ -35,14 +35,11 @@ public class ItemController {
     }
 
 
-
-
-
     @PostMapping("/dodaj")
     public String addItemsToList(@RequestParam Long listId, @RequestParam String itemName,
                                  @RequestParam String itemDesc, @RequestParam Double itemPrice, Model model) {
-        if(itemService.checkItem(itemName, itemPrice)){
-            model.addAttribute("message", new Message( "Podano niepoprawne dane o produkcie","Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
+        if (itemService.checkItem(itemName, itemPrice)) {
+            model.addAttribute("message", new Message("Podano niepoprawne dane o produkcie", "Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
             return "messageInfo";
         }
 
@@ -60,14 +57,11 @@ public class ItemController {
 
     @GetMapping("/edytuj/lista{listId}/produkt{itemId}")
     public String getToItemEdit(@PathVariable Long listId, @PathVariable Long itemId, Model model) {
-
         Item item = itemService.findItemByIdIfPresent(itemId);
         ShoppingList list = shoppingListService.findListByIdIfPresent(listId);
 
         model.addAttribute("item", item);
         model.addAttribute("list", list);
-
-
         return "itemEdit";
     }
 
@@ -76,17 +70,16 @@ public class ItemController {
     public String editItem(@PathVariable Long listId, @PathVariable Long itemId,
                            @RequestParam String itemName, @RequestParam String itemDesc,
                            @RequestParam Double itemPrice, Model model) {
-        if(itemService.checkItem(itemName, itemPrice)){
-            model.addAttribute("message", new Message( "Podano niepoprawne dane o produkcie","Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
+        if (itemService.checkItem(itemName, itemPrice)) {
+            model.addAttribute("message", new Message("Podano niepoprawne dane o produkcie", "Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
             return "messageInfo";
         }
         itemService.editItem(itemId, itemName, itemDesc, itemPrice);
         List<Item> items = itemService.getListItems(listId);
         Double sum = itemService.getSumPrices(listId);
-        shoppingListService.findListById(listId)
-                .ifPresent(list ->
-                        model.addAttribute("list", list));
+        ShoppingList list = shoppingListService.findListByIdIfPresent(listId);
 
+        model.addAttribute("list", list);
         model.addAttribute("message", new Message("Edycja produktu zakończona", "Poprawnie edytowano produkt"));
         model.addAttribute("listItems", items);
         model.addAttribute("sum", sum);
@@ -95,17 +88,7 @@ public class ItemController {
 
     @GetMapping("/usunProdukt/{id}/{listId}")
     public String deleteProductFromList(@PathVariable Long id, @PathVariable Long listId, Model model) {
-
-        List<Item> items = itemService.getListItems(listId);
-        itemService.deleteItemFromList(id, items);
-
-        shoppingListService.findListById(listId)
-                .ifPresent(list -> {
-                    list.setListItems(items);
-                    shoppingListService.saveList(list);
-                    model.addAttribute("list", list);
-                });
-
+        itemService.deleteItemFromList(id, listId);
         model.addAttribute("message", new Message("Usunięto produkt", "Usnięto produkt z listy"));
         return "messageDeletedItem";
     }

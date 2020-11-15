@@ -21,7 +21,7 @@ public class ItemService {
 
     private ItemRepository itemRepository;
     private ShoppingListRepository shoppingListRepository;
-    private  ShoppingListService shoppingListService;
+    private ShoppingListService shoppingListService;
 
     @Autowired
     public ItemService(ItemRepository itemRepository, ShoppingListRepository shoppingListRepository, ShoppingListService shoppingListService) {
@@ -31,16 +31,15 @@ public class ItemService {
     }
 
 
-
     public Optional<Item> findItemById(Long id) {
         return itemRepository.findById(id);
     }
 
-    public Item findItemByIdIfPresent(Long id){
+    public Item findItemByIdIfPresent(Long id) {
         return itemRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    public Item createSetSaveItem(String name, String desc, Double price) {
+    private Item createSetSaveItem(String name, String desc, Double price) {
         Item item = new Item();
         item.setName(name);
         item.setShortDescription(desc);
@@ -49,7 +48,7 @@ public class ItemService {
         return item;
     }
 
-    public List<Item> saveItemOnShoppingList( String itemName, String itemDesc, Double itemPrice, Long listId){
+    public List<Item> saveItemOnShoppingList(String itemName, String itemDesc, Double itemPrice, Long listId) {
         List<Item> items = getListItems(listId);
         Item item = createSetSaveItem(itemName, itemDesc, itemPrice);
         items.add(item);
@@ -94,11 +93,17 @@ public class ItemService {
                 });
     }
 
-    public void deleteItemFromList(Long id, List<Item> list) {
+    private void deleteItem(Long id, List<Item> list) {
         list.stream()
                 .filter(u -> u.getId().equals(id))
                 .findAny()
-                .ifPresent(item -> list.remove(item));
+                .ifPresent(list::remove);
+    }
+
+    public ShoppingList deleteItemFromList(Long itemId, Long listId) {
+        List<Item> items = getListItems(listId);
+        deleteItem(itemId, items);
+        return shoppingListService.findListByIdIfPresent(listId);
     }
 
 

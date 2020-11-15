@@ -62,7 +62,7 @@ public class ShoppingListService {
     }
 
 
-    public ShoppingList createSetSaveList(String name, String desc) {
+    private ShoppingList createSetSaveList(String name, String desc) {
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.setName(name);
         shoppingList.setDesc(desc);
@@ -71,7 +71,7 @@ public class ShoppingListService {
         return shoppingList;
     }
 
-    public Message createNewListWithMessage(String listName, String listDesc){
+    public Message createNewListWithMessage(String listName, String listDesc) {
         if (listName.isEmpty()) {
             return new Message("Nie podano nazwy", "Lista musi mieć nadaną nazwę");
         } else {

@@ -42,7 +42,7 @@ public class ItemController {
                                  @RequestParam String itemDesc, @RequestParam Double itemPrice, Model model) {
         if(itemService.checkItem(itemName, itemPrice)){
             model.addAttribute("message", new Message( "Podano niepoprawne dane o produkcie","Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
-            return "messageDeleted";
+            return "messageInfo";
         }
 
         List<Item> items = itemService.getListItems(listId);
@@ -85,7 +85,7 @@ public class ItemController {
                            @RequestParam Double itemPrice, Model model) {
         if(itemService.checkItem(itemName, itemPrice)){
             model.addAttribute("message", new Message( "Podano niepoprawne dane o produkcie","Ograniczenia: produkt musi mieć nazwę i cenę większą od 0"));
-            return "messageDeleted";
+            return "messageInfo";
         }
         itemService.editItem(itemId, itemName, itemDesc, itemPrice);
         List<Item> items = itemService.getListItems(listId);

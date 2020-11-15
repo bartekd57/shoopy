@@ -20,6 +20,7 @@ public class ItemService {
     private ItemRepository itemRepository;
     private ShoppingListRepository shoppingListRepository;
 
+
     @Autowired
     public ItemService(ItemRepository itemRepository, ShoppingListRepository shoppingListRepository) {
         this.itemRepository = itemRepository;

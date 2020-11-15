@@ -81,5 +81,14 @@ public class ShoppingListService {
                 });
     }
 
+    public List<ShoppingList> findAllListsOrByStatus(Status status) {
+        List<ShoppingList> shoppingLists;
+        if (status == null)
+            shoppingLists = getAllLists();
+        else
+            shoppingLists = findListByStatus(status);
+        return shoppingLists;
+    }
+
 
 }

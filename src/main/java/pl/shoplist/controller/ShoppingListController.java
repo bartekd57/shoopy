@@ -90,12 +90,7 @@ public class ShoppingListController {
 
     @GetMapping("/listy")
     public String home(@RequestParam(required = false) Status status, Model model) {
-        List<ShoppingList> shoppingLists;
-        if (status == null)
-            shoppingLists = shoppingListService.getAllLists();
-        else
-            shoppingLists = shoppingListService.findListByStatus(status);
-
+        List<ShoppingList> shoppingLists = shoppingListService.findAllListsOrByStatus(status);
         model.addAttribute("shopLists", shoppingLists);
         return "index";
     }

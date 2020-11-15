@@ -73,5 +73,13 @@ public class ShoppingListService {
             list.setStatus(Status.NEW);
     }
 
+    public void findListAndChangeStatus(Long id) {
+        findListById(id)
+                .ifPresent(list -> {
+                    changeListStatus(list);
+                    shoppingListRepository.save(list);
+                });
+    }
+
 
 }

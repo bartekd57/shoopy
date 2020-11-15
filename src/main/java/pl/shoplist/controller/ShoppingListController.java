@@ -64,7 +64,6 @@ public class ShoppingListController {
     @GetMapping("usun/{id}")
     public String removeList(@PathVariable Long id, Model model) {
         shoppingListService.findAndDeleteList(id);
-
         model.addAttribute("message", new Message("Usunięto listę", "Lista została usunięta z bazy"));
         return "messageDeleted";
     }
@@ -83,12 +82,7 @@ public class ShoppingListController {
 
     @GetMapping("/status")
     public String changeStatus(@RequestParam Long listId, Model model) {
-        shoppingListService.findListById(listId)
-                .ifPresent(list -> {
-                    shoppingListService.changeListStatus(list);
-                    shoppingListService.saveList(list);
-                });
-
+        shoppingListService.findListAndChangeStatus(listId);
         model.addAttribute("message", new Message("Zmieniono status listy", "Status listy pomyślnie zmieniony"));
         return "messageDeleted";
 

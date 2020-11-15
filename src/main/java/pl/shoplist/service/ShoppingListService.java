@@ -34,6 +34,14 @@ public class ShoppingListService {
         shoppingListRepository.delete(shoppingList);
     }
 
+    public void findAndDeleteList(Long id) {
+        findListById(id)
+                .ifPresent(list -> {
+                    deleteList(list);
+                });
+    }
+
+
     public void saveList(ShoppingList shoppingList) {
         shoppingListRepository.save(shoppingList);
     }

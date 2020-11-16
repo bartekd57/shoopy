@@ -1,5 +1,4 @@
 package pl.shoplist.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import pl.shoplist.repository.ItemRepository;
 import pl.shoplist.repository.ShoppingListRepository;
 import pl.shoplist.service.ItemService;
 import pl.shoplist.service.ShoppingListService;
-
 import java.util.List;
 
 @Controller

@@ -1,22 +1,17 @@
 package pl.shoplist.service;
-
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import pl.shoplist.model.Item;
 import pl.shoplist.model.ShoppingList;
-
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ItemServiceTest {
+
 
 
     @Test
@@ -25,7 +20,8 @@ class ItemServiceTest {
         ItemService itemService = mock(ItemService.class);
         when(itemService.saveItemOnShoppingList(Mockito.anyString(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyLong())).thenReturn(preparedItemList());
         //when
-        List<Item> items = itemService.saveItemOnShoppingList(Mockito.anyString(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyLong());
+        Item item = preparedItemList().get(0);
+        List<Item> items = itemService.saveItemOnShoppingList(item.getName(), item.getShortDescription(), item.getPrice(), 1L);
         //then
         Assert.assertEquals(3, preparedItemList().size());
 

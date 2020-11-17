@@ -22,6 +22,12 @@ public class Item {
     public Item() {
     }
 
+    public Item(String name, String shortDescription, Double price) {
+        this.name = name;
+        this.shortDescription = shortDescription;
+        this.price = price;
+    }
+
     public Item(Long id, String name, String shortDescription, Double price, Category category) {
         this.id = id;
         this.name = name;

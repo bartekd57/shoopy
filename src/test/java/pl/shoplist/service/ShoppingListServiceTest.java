@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class ShoppingListServiceTest {
 
     @Test
-    void should_find_List_By_Id_IfPresent() {
+    void shouldFindListByIdIfPresent() {
         //given
         ShoppingListService shoppingListService = mock(ShoppingListService.class);
         when(shoppingListService.findListByIdIfPresent(Mockito.anyLong())).thenReturn(preparedShoppingLists().get(0));
@@ -30,7 +30,7 @@ class ShoppingListServiceTest {
     }
 
     @Test
-    void should_get_All_Lists() {
+    void shouldGetAllLists() {
         //given
         ShoppingListService shoppingListService = mock(ShoppingListService.class);
         when(shoppingListService.getAllLists()).thenReturn(preparedShoppingLists());
@@ -41,7 +41,7 @@ class ShoppingListServiceTest {
     }
 
     @Test
-    void should_find_List_By_Status() {
+    void shouldFindListByStatus() {
         //given
         ShoppingListService shoppingListService = mock(ShoppingListService.class);
         when(shoppingListService.findListByStatus(Mockito.any(Status.class))).thenReturn(finishedShoppingLists());
@@ -52,7 +52,7 @@ class ShoppingListServiceTest {
     }
 
     @Test
-    void should_find_All_Lists_Or_By_Status() {
+    void shouldFindAllListsOrByStatus() {
         //given
         ShoppingListService shoppingListService = mock(ShoppingListService.class);
         when(shoppingListService.findAllListsOrByStatus(Mockito.any(Status.class))).thenReturn(newShoppingLists());

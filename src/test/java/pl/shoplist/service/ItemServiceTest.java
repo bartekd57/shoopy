@@ -15,7 +15,7 @@ class ItemServiceTest {
 
 
     @Test
-    void should_save_Item_On_ShoppingList() {
+    void shouldSaveItemOnShoppingList() {
         //given
         ItemService itemService = mock(ItemService.class);
         when(itemService.saveItemOnShoppingList(Mockito.anyString(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyLong())).thenReturn(preparedItemList());
@@ -28,7 +28,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void should_get_ListItems() {
+    void shouldGetListItems() {
         //given
         ItemService itemService = mock(ItemService.class);
         when(itemService.getListItems(Mockito.anyLong())).thenReturn(preparedItemList());
@@ -40,7 +40,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void should_get_SumPrices() {
+    void shouldGetSumPrices() {
         //given
         ItemService itemService = mock(ItemService.class);
         when(itemService.getSumPrices(Mockito.anyLong())).thenReturn(preparedItemList().stream().mapToDouble(Item::getPrice).sum());
@@ -51,7 +51,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void should_not_checkItem() {
+    void shouldNotCheckItem() {
         //given
         ItemService itemService = mock(ItemService.class);
         when(itemService.checkItem(Mockito.anyString(), Mockito.anyDouble())).thenReturn(preparedItemList().get(1).getName().isEmpty());
@@ -62,7 +62,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void should_delete_Item_From_List() {
+    void shouldDeleteItemFromList() {
         //given
         ItemService itemService = mock(ItemService.class);
         when(itemService.deleteItemFromList(Mockito.anyLong(), Mockito.anyLong())).thenReturn(preparedShoppingList());
@@ -73,7 +73,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void should_find_Item_By_Id_IfPresent() {
+    void shouldFindItemByIdIfPresent() {
         //given
         ItemService itemService = mock(ItemService.class);
         when(itemService.findItemByIdIfPresent(Mockito.anyLong())).thenReturn(preparedItemList().get(2));

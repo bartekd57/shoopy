@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 class ShoppingListServiceTest2 {
@@ -36,8 +37,14 @@ class ShoppingListServiceTest2 {
         given(shoppingListRepository.findAll()).willReturn(preparedShoppingLists());
     }
 
+    @BeforeEach
+    public void setUp() throws Exception {
+        initMocks(this);
+
+    }
+
     @Test
-    void shouldGetAllLists() {
+    public void shouldGetAllLists() {
         List<ShoppingList> allLists = shoppingListService.getAllLists();
         //then
         Assert.assertEquals(allLists.size(),3);

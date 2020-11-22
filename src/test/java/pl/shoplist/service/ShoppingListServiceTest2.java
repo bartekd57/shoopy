@@ -5,9 +5,7 @@ import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.shoplist.model.Item;
 import pl.shoplist.model.ShoppingList;
@@ -17,6 +15,8 @@ import pl.shoplist.repository.ShoppingListRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -41,6 +41,8 @@ class ShoppingListServiceTest2 {
     public void setUp() throws Exception {
         initMocks(this);
         given(shoppingListRepository.findAll()).willReturn(preparedShoppingLists());
+        given(shoppingListRepository.findAllByStatus(Mockito.any(Status.class))).willReturn(finishedShoppingLists());
+        given(shoppingListRepository.findById(Mockito.anyLong())).willReturn(Optional.of(preparedShoppingList()));  // czy z tego optionala trzeba gdzies obsłużyć wyjątek?
     }
 
     @Test
@@ -50,7 +52,18 @@ class ShoppingListServiceTest2 {
         Assert.assertEquals(allLists.size(),3);
     }
 
+    @Test
+    void shouldFindListByStatus() {
+        List<ShoppingList> listsByStatus = shoppingListService.findListByStatus(Status.FINISHED);
+        //then
+        Assert.assertEquals(listsByStatus.size(), 2);
+    }
 
+    @Test
+    void shouldFindListById() {
+        Optional<ShoppingList> listById = shoppingListService.findListById(1L);
+        Assert.assertEquals("codzienna", listById.get().getName());
+    }
 
     private List<Item> preparedItemList1() {
         List<Item> items = new ArrayList<>();
@@ -66,6 +79,9 @@ class ShoppingListServiceTest2 {
         items.add(new Item("banany", "dobre na mase", 4.5));
         items.add(new Item("chipsy", "paprykowe", 6.0));
         return items;
+    }
+    private ShoppingList preparedShoppingList(){
+        return new ShoppingList(1L,"codzienna", "lista na co dzien", preparedItemList1(), Status.NEW);
     }
 
     private List<ShoppingList> preparedShoppingLists() {
@@ -89,4 +105,7 @@ class ShoppingListServiceTest2 {
         lists.add(new ShoppingList(1L, "codzienna", "lista na co dzien", preparedItemList1(), Status.NEW));
         return lists;
     }
+
+
+
 }

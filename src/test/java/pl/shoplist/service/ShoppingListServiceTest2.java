@@ -40,7 +40,7 @@ class ShoppingListServiceTest2 {
     @BeforeEach
     public void setUp() throws Exception {
         initMocks(this);
-
+        given(shoppingListRepository.findAll()).willReturn(preparedShoppingLists());
     }
 
     @Test

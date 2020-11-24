@@ -7,4 +7,4 @@ Na stronie głównej wyświetlana jest tabela z istaniejącymi listami zakupowym
 przycisk bezpośredniego dodania nowego produktu do listy, a także opcja usunięcia danej listy.
 Po przejściu do konkretnej listy widać jej nazwę, opis, status, a także tabelę z przyporządkowanymi produktami.
 Tabela z produktami zawiera listę produktów z ich nazwami, opisami, ceną, przyciski do edycji danego produktu lub jego usunięcia z listy.
-Dzięki przyciskom pod tabelą można dodać nowy produkt do listy, zmienić jej status lub usunąć całą listę.
+Dzięki przyciskom pod tabelą można dodać nowy produkt do listy, zmienić jej status lub usunąć całą listę..

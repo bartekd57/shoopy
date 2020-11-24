@@ -6,6 +6,8 @@ import pl.shoplist.model.Item;
 import pl.shoplist.model.ShoppingList;
 import pl.shoplist.repository.ItemRepository;
 import pl.shoplist.repository.ShoppingListRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -62,11 +64,9 @@ public class ItemService {
     }
 
     public List<Item> getListItems(Long id) {
-        return shoppingListRepository.findById(id)
+        return new ArrayList<>(shoppingListRepository.findById(id)
                 .map(ShoppingList::getListItems)
-                .orElseThrow(ItemsNotFoundException::new)
-                .stream()
-                .collect(Collectors.toList());
+                .orElseThrow(ItemsNotFoundException::new));
 
     }
 
